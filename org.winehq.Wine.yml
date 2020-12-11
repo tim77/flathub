@@ -1,5 +1,5 @@
 id: org.winehq.Wine
-default-branch: proton
+default-branch: experimental
 sdk: org.freedesktop.Sdk
 runtime: org.freedesktop.Platform
 runtime-version: '20.08'
@@ -137,7 +137,7 @@ modules:
     sources: &wine-sources
       - type: git
         url: "https://github.com/ValveSoftware/wine.git"
-        branch: proton_5.13
+        branch: experimental_5.13
 
   # 32-bit compatibility build
 
