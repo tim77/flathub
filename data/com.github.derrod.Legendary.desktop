@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Legendary
+Exec=sh
+Type=Application
+Icon=com.github.derrod.Legendary
+Comment=Free and open-source replacement for the Epic Games Launcher
+Terminal=true

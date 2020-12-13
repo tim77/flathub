@@ -1,0 +1,108 @@
+# Draft build
+
+app-id: com.github.derrod.Legendary
+runtime: org.freedesktop.Platform
+runtime-version: '20.08'
+sdk: org.freedesktop.Sdk
+
+# WINE/Proton not packaged yet on Flathub but you can find it in russianfedora
+# repo:
+#   $ flatpak install https://dl.russianfedora.online/repo/appstream/org.winehq.Wine.flatpakref
+# Source:
+#   https://github.com/gasinvein/flatpak-apps-staging/tree/org.winehq.Wine/proton
+base: org.winehq.Wine
+base-version: 'proton'
+
+cleanup:
+  - /lib/*.a
+  - /lib/*.la
+  - /lib32/*.a
+  - /lib32/*.la
+  - /share/doc
+  - /share/man
+cleanup-commands:
+  - mkdir -p ${FLATPAK_DEST}/lib{,32}/
+add-extensions:
+  org.freedesktop.Platform.Compat.i386:
+    directory: lib/i386-linux-gnu
+    version: '20.08'
+
+  org.freedesktop.Platform.Compat.i386.Debug:
+    directory: lib/debug/lib/i386-linux-gnu
+    version: '20.08'
+    no-autodownload: true
+
+  org.freedesktop.Platform.GL32:
+    directory: lib/i386-linux-gnu/GL
+    version: '1.4'
+    versions: 20.08;1.4
+    subdirectories: true
+    no-autodownload: true
+    autodelete: false
+    add-ld-path: lib
+    merge-dirs: vulkan/icd.d;glvnd/egl_vendor.d;OpenCL/vendors;lib/dri;lib/d3d;vulkan/explicit_layer.d
+    download-if: active-gl-driver
+    enable-if: active-gl-driver
+
+  # org.winehq.Wine.gecko:
+  #   directory: share/wine/gecko
+
+  # org.winehq.Wine.mono:
+  #   directory: share/wine/mono
+
+  # org.winehq.Wine.DLLs:
+  #   directory: dlls
+  #   subdirectories: true
+  #   merge-dirs: lib;lib32;
+
+command: legendary
+
+finish-args:
+  - --allow=multiarch
+  - --device=all
+  - --env=LGDRY_WINE_PREFIX=/var/data/legendary_pfx
+  - --env=WINEDLLPATH=/app/dlls/lib32:/app/dlls/lib:/app/lib32/wine/wined3d:/app/lib/wine/wined3d
+  - --env=WINEESYNC=1
+  - --env=WINEFSYNC=1
+  - --env=GST_PLUGIN_SYSTEM_PATH=/app/lib32/gstreamer-1.0:/app/lib/gstreamer-1.0:/usr/lib/i386-linux-gnu/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/gstreamer-1.0
+  - --filesystem=~/legendary:create
+  - --share=ipc
+  - --share=network
+  - --socket=pulseaudio
+  - --socket=wayland
+  - --socket=x11
+
+modules:
+  - name: legendary
+    buildsystem: simple
+    build-commands:
+      - pip3 install
+        --no-index
+        --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST}
+        --no-deps .
+      # - install -Dpm644 ./${FLATPAK_ID}.metainfo.xml -t /app/share/metainfo/
+      - install -Dpm644 ./${FLATPAK_ID}.png -t /app/share/icons/hicolor/512x512/apps/
+      - install -Dpm644 ./${FLATPAK_ID}.desktop -t /app/share/applications/      
+    sources:
+      - type: git
+        tag: 0.20.4
+        commit: 8e012c04418b81eecc4b6d10148c5a296dc6971b
+        url: https://github.com/derrod/legendary
+      # - type: file
+      #   path: data/com.github.derrod.Legendary.metainfo.xml
+      - type: file
+        path: data/com.github.derrod.Legendary.png
+      - type: file
+        path: data/com.github.derrod.Legendary.desktop
+
+  - name: bundle-setup
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app{,/lib/debug}/lib/i386-linux-gnu
+      - install -Dpm0644 ld.so.conf -t /app/etc
+    sources:
+      - type: file
+        path: ld.so.conf
+
+  - generated/pypi-dependencies.json
