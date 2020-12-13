@@ -134,14 +134,14 @@ modules:
         done
     sources: &wine-sources
       - type: archive
-        url: https://dl.winehq.org/wine/source/6.0/wine-6.0-rc1.tar.xz
-        sha256: 78ddc948f946c662779bd5943d91812740480021bc951cbcadeb102c38b53bc8
+        url: https://dl.winehq.org/wine/source/6.0/wine-6.0-rc2.tar.xz
+        sha256: f20887cbe62cc42539b21f5823d64fdc310018b1533ebf042da81927f3920d76
         x-checker-data:
           type: html
           url: https://dl.winehq.org/wine/source/6.0/
           url-pattern: (wine-[\d\.]+.tar.xz)
           version-pattern: wine-([\d\.]+).tar.xz
-        size: 24194552
+        size: 24190236
 
   # 32-bit compatibility build
 
