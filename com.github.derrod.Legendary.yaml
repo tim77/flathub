@@ -86,8 +86,8 @@ modules:
       - install -Dpm644 ./${FLATPAK_ID}.desktop -t /app/share/applications/      
     sources:
       - type: git
-        tag: 0.20.4
-        commit: 8e012c04418b81eecc4b6d10148c5a296dc6971b
+        tag: 0.20.5
+        commit: bd0b9248ee5a1375691e169ef75d3322aa6715cd
         url: https://github.com/derrod/legendary
       # - type: file
       #   path: data/com.github.derrod.Legendary.metainfo.xml
