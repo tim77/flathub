@@ -7,9 +7,10 @@ sdk: org.freedesktop.Sdk
 
 # WINE/Proton not packaged yet on Flathub but you can find it in russianfedora
 # repo:
-#   $ flatpak install https://dl.russianfedora.online/repo/appstream/org.winehq.Wine.flatpakref
+# $ flatpak install https://dl.russianfedora.online/repo/appstream/org.winehq.Wine.flatpakref
+#
 # Source:
-#   https://github.com/gasinvein/flatpak-apps-staging/tree/org.winehq.Wine/proton
+# https://github.com/gasinvein/flatpak-apps-staging/tree/org.winehq.Wine/proton
 base: org.winehq.Wine
 base-version: 'proton'
 
@@ -83,7 +84,7 @@ modules:
         --no-deps .
       # - install -Dpm644 ./${FLATPAK_ID}.metainfo.xml -t /app/share/metainfo/
       - install -Dpm644 ./${FLATPAK_ID}.png -t /app/share/icons/hicolor/512x512/apps/
-      - install -Dpm644 ./${FLATPAK_ID}.desktop -t /app/share/applications/      
+      - install -Dpm644 ./${FLATPAK_ID}.desktop -t /app/share/applications/
     sources:
       - type: git
         tag: 0.20.5
